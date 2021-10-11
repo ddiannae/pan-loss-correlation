@@ -2,12 +2,9 @@ library(readr)
 library(tidyr)
 library(dplyr)
 
-tissues <- c("breast", "colorectal", "esophagus", 
-             "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
-             "testis", "thyroid","skin", "uterus")
-#tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus", 
-#             "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
-#             "testis", "thyroid","skin", "uterus")
+tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus",
+            "kidney", "liver", "lung", "ovary", "pancreas", "prostate",
+            "testis", "thyroid","skin", "uterus")
 
 tissue_combs <- expand_grid(t1 = tissues, t2 = tissues) %>% 
   filter(t1 != t2) %>%
@@ -34,7 +31,7 @@ all_interactions <- all_interactions %>%
                      pmax(source_ensembl, target_ensembl)))
 
 all_comms <- lapply(tissues, function(tissue) {
-  communities <- read_tsv(paste0("/datos/ot/diana/regulacion-trans/", tissue, "/network_aracne/cancer-comm-100000.tsv"))
+  communities <- read_tsv(paste0(tissue, "/network_aracne/cancer-comm-100000.tsv"))
   communities$tissue <- tissue
   return(communities)
 })
