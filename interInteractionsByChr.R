@@ -115,7 +115,7 @@ saveNetworkPlots <- function(nets, cond, ts, ni) {
 tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus", 
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
              "testis", "thyroid","skin", "uterus")
-ninteractions <- "10000"
+ninteractions <- "100000"
 cancer_nets <- getInteractionsByChr("cancer", tissues, ninteractions)
 #cancer_nets <- readNets("cancer", tissues, ninteractions)
 names(cancer_nets) <- tissues

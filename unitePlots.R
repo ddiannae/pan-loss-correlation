@@ -22,36 +22,42 @@ unitePlots <- function(plotname) {
 
 unitePlots("/distance_plots/intra-inter-count-onek-bins.png")
 unitePlots("/distance_plots/intra-inter-count-log-bins.png")
-unitePlots("/distance_plots/bin-size-50.png")
+unitePlots("/distance_plots/bin-size-100.png")
+unitePlots("/distance_plots/bin-size-1000.png")
 unitePlots("/distance_plots/bin-distance-100000.png")
 
-unitePlots("/network_aracne_plots/comm-diameter-boxplot-network-10000.png")
-unitePlots("/network_aracne_plots/comm-diameter-histogram-network-10000.png")
-unitePlots("/network_aracne_plots/comm-meandistance-boxplot-network-10000.png")
-unitePlots("/network_aracne_plots/comm-meandistance-histogram-network-10000.png")
-unitePlots("/network_aracne_plots/comm-density-boxplot-network-10000.png")
-unitePlots("/network_aracne_plots/comm-density-histogram-network-10000.png")
-unitePlots("/network_aracne_plots/comm-order-boxplot-network-10000.png")
-unitePlots("/network_aracne_plots/comm-order-histogram-network-10000.png")
-unitePlots("/network_aracne_plots/comm-size-boxplot-network-10000.png")
-unitePlots("/network_aracne_plots/comm-size-histogram-network-10000.png")
 
-unitePlots("/network_aracne_plots/degree-distribution-10000.png")
-unitePlots("/network_aracne_plots/degree-distribution-cumulative-10000.png")
+##### Changed to /network_aracne_plots/communities
+unitePlots("/network_aracne_plots/communities/comm-diameter-boxplot-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-diameter-histogram-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-meandistance-boxplot-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-meandistance-histogram-network-intra-100000.png")
+
+unitePlots("/network_aracne_plots/communities/comm-density-boxplot-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-density-histogram-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-order-boxplot-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-order-histogram-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-size-boxplot-network-intra-100000.png")
+unitePlots("/network_aracne_plots/communities/comm-size-histogram-network-intra-100000.png")
+
+unitePlots("/network_aracne_plots/degree-distribution-100000.png")
+unitePlots("/network_aracne_plots/degree-distribution-cumulative-100000.png")
 unitePlots("/network_aracne_plots/mi-density-network-100000.png")
 unitePlots("/network_aracne_plots/mi-boxplot-network-100000.png")
 
-unitePlots("/network_aracne_plots/normal_only-chr-inter-interactions-sparse-10000.png")
-unitePlots("/network_aracne_plots/normal_only-chr-inter-interactions-10000.png")
-unitePlots("/network_aracne_plots/cancer_only-chr-inter-interactions-sparse-10000.png")
-unitePlots("/network_aracne_plots/cancer_only-chr-inter-interactions-10000.png")
-unitePlots("/network_aracne_plots/shared-chr-inter-interactions-sparse-10000.png")
-unitePlots("/network_aracne_plots/shared-chr-inter-interactions-10000.png")
+# unitePlots("/network_aracne_plots/normal_only-chr-inter-interactions-sparse-10000.png")
+# unitePlots("/network_aracne_plots/normal_only-chr-inter-interactions-10000.png")
+# unitePlots("/network_aracne_plots/cancer_only-chr-inter-interactions-sparse-10000.png")
+# unitePlots("/network_aracne_plots/cancer_only-chr-inter-interactions-10000.png")
+# unitePlots("/network_aracne_plots/shared-chr-inter-interactions-sparse-10000.png")
+# unitePlots("/network_aracne_plots/shared-chr-inter-interactions-10000.png")
 
 unitePlots("/distance_plots_no_arsyn/intra-inter-count-onek-bins.png")
 unitePlots("/distance_plots_no_arsyn/intra-inter-count-log-bins.png")
 unitePlots("/distance_plots_no_arsyn/bin-size-50.png")
 unitePlots("/distance_plots_no_arsyn/bin-distance-100000.png")
 
+unitePlots("/network_aracne_plots/assortativity/cancer-comm-assort-enrich-0_terms-100000.png")
+unitePlots("/network_aracne_plots/assortativity/normal-comm-assort-enrich-0_terms-100000.png")
 
 
