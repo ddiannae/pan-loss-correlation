@@ -1,3 +1,10 @@
+## #############################################################
+## This file integrates the intra_fraction values at different 
+## top MI tresholds for all cancer and normal tissues into a 
+## single heatmap
+## Figure 1 in article. 
+################################################################
+
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -22,7 +29,7 @@ mi_data <- mi_data %>% filter(bin <= 5e7)
 
 mi_data_matrix <-
   mi_data %>% mutate(id = paste(tissue, cond, sep = "-")) %>% 
-    pivot_wider(id_cols = bin, names_from = id, values_from = intra_frac)
+    pivot_wider(id_cols = bin, names_from = id, values_from = intra_fraction)
 
 rnames <- mi_data_matrix %>% pull(bin)
 mi_data_matrix <- mi_data_matrix %>% select(-bin) %>% as.matrix()
