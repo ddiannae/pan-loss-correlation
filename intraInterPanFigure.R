@@ -1,6 +1,6 @@
 ## #############################################################
 ## This file integrates the intra_fraction values at different 
-## top MI tresholds for all cancer and normal tissues into a 
+## top MI thresholds for all cancer and normal tissues into a 
 ## single heatmap
 ## Figure 1 in article. 
 ################################################################
