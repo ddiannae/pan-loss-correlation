@@ -1,6 +1,13 @@
+########################################################################
+## Script to integrate information from communities per condition. 
+## The output file contains expr and chr assortativity, intra-fraction, 
+## enriched terms, and tissue per community.
+######################################################################
+
 library(readr)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 
 tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus",
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate",
@@ -16,8 +23,8 @@ getSummaries <- function(cond, tss) {
   return(bind_rows(all_summaries))
 }
 
+getSummaries("normal", tissues) %>% 
+  write_tsv("pan-loss/network_aracne/cancer-communities-summary-100000.tsv")
+
 getSummaries("cancer", tissues) %>% 
   write_tsv("pan-loss/network_aracne/cancer-communities-summary-100000.tsv")
-getSummaries("normal", tissues) %>% 
-  write_tsv("pan-loss/network_aracne/normal-communities-summary-100000.tsv")
-
