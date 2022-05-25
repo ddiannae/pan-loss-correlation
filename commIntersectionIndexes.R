@@ -1,6 +1,6 @@
-########################################################################
-## Script to get overlap indexes between communities from all tissues
-## and from cancer and normal 
+#######################################################################
+## Script to get overlap indexes and jaccard indexes between 
+## communities from all tissues and from cancer and normal 
 ######################################################################
 
 library(readr)
@@ -11,6 +11,7 @@ tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus",
             "kidney", "liver", "lung", "ovary", "pancreas", "prostate",
             "testis", "thyroid","skin", "uterus")
 
+setwd("/datos/ot/diana/regulacion-trans/")
 tissue_combs <- expand_grid(t1 = tissues, t2 = tissues) %>% 
   filter(t1 != t2) %>%
   mutate(id = paste0(pmin(t1, t2), "-", pmax(t1, t2))) %>% 
@@ -24,7 +25,7 @@ jacc_index <- function(net1, net2, comm1, comm2) {
   return(length(intersect(links1, links2))/length(union(links1, links2)))
 }
 
-get_scores <- function(cond) {
+get_scores <- function(cond, type) {
   cat("Working with condition ", cond, "\n")
   all_interactions <- lapply(tissues, function(tissue) {
     interactions <- read_tsv(paste0(tissue, 
@@ -64,7 +65,12 @@ get_scores <- function(cond) {
           filter(source_ensembl %in% set2 & 
                    target_ensembl %in% set2) %>% pull(id)
         
-        length(intersect(links1, links2))/min(length(links1), length(links2))
+        intersection <- length(intersect(links1, links2))
+        if(type == "overlap") {
+          return(intersection/min(length(links1), length(links2)))
+        } else {
+          return(intersection/length(union(links1, links2)))
+        }
       })
       tibble(comm1 = j, comm2 = j:max_comms[tissue2], score = unlist(k_scores))
     })
@@ -75,9 +81,11 @@ get_scores <- function(cond) {
   })
   
   bind_rows(all_scores) %>%
-    write_tsv(paste0("pan-loss/community_intersections/", cond, "_overlap_scores.tsv"))
+    write_tsv(paste0("pan-loss/community_intersections/", cond, "_", type, "_scores.tsv"))
   
 }
 
-get_scores("normal")
-get_scores("cancer")
+#get_scores("normal", "overlap")
+#get_scores("cancer", "overlap")
+get_scores("normal", "jaccard")
+get_scores("cancer", "jaccard")
