@@ -1,3 +1,7 @@
+#######################################################################
+## Script to get bipartite communities to enrichments network.
+#######################################################################
+
 library(readr)
 library(dplyr)
 library(igraph)
@@ -64,4 +68,3 @@ enrichments_cancer %>% select(id, description) %>%
 enrichments_cancer %>% select(id, description, tissue) %>% distinct() %>%
   group_by(id, description) %>% tally() %>% filter(n == 1)  %>% 
   write_tsv("pan-loss/enrichments/comm-enrich-cancer-unicos_10.tsv")
-
