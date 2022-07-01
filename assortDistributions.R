@@ -18,11 +18,6 @@ tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus",
 names(tissues) <- tissues
 substr(names(tissues),1, 1) <- toupper(substr(names(tissues),1, 1))
   
-# colors <- c("yellow", "grey", "pink", "navyblue", "#ccccff",
-#             "orange", "#50C878", "white", "darkcyan", "purple", "lightblue",
-#             "black", "orchid", "blue",  "peachpuff")
-# names(colors) <- tissues
-
 color_pal <- c("#e3a098", "#a32e27")
 labels <- c( "Normal", "Cancer")
 names(color_pal) <- labels
@@ -82,14 +77,13 @@ p <- ggplot(cancer , aes(x = tissue, y = expr_assortativity, fill = cond,
   theme(legend.position = "none", axis.text.x = element_blank(),
         plot.background = element_blank(), 
         strip.text.x = element_text(size = 22),
-        strip.text.y = element_text(size = 20)) + 
+        strip.text.y = element_text(size = 20), ) + 
   facet_grid(cond~tissue, scale= "free_x", labeller = labeller(tissue = capitalize))
 
 png(paste0("pan-loss/network_aracne_plots/assortativity/expr_assortativity.png"), 
     width = 2000, height = 200)
 print(p)
 dev.off()
-
 
 cancer_enriched <- cancer %>%
   filter(size >= 5) %>%
@@ -98,35 +92,70 @@ cancer_enriched <- cancer %>%
                              ordered = TRUE))
 
 symnum.args <- list(cutpoints = c(0, 0.0001, 0.001, 0.01, 0.05, 1), symbols = c("****", "***", "**", "*", ""))
+color_pal_enriched <- c("#878787", "#699B61")
 
-p <- ggplot(cancer_enriched,  aes(x=isEnriched, y=expr_assortativity, color=cond)) +
+p <- ggplot(cancer_enriched,  aes(x=isEnriched, y=expr_assortativity, color=isEnriched)) +
   geom_boxplot(size=1) + 
-  ylab("Expression\nAssortativity") +
-  scale_color_manual(values = color_pal) +
-  theme_base(base_size = 20) +
+  ylab("Expression Assortativity") +
+  scale_color_manual(name = "", values = color_pal_enriched, 
+                     labels = c("No biologically associated", "Gene Ontology enriched")) +
+  theme_base(base_size = 30) +
   xlab("") +
-  theme(legend.position = "none") +
-  stat_compare_means(aes(label = ..p.signif..),  label.x = 1.5, label.y = 1.1, symnum.args = symnum.args)+
-  ylim(c(-1, 1.15)) +
-  facet_grid(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize))
+  stat_compare_means(aes(label = ..p.signif..),  label.x = 1.5, label.y = 1.1, symnum.args = symnum.args, 
+                     show.legend = F, size = 5)+
+  stat_summary(fun.data = ~c(y = -0.8, label = length(.)), geom = "text", color = "black",  size = 5) +
+  ylim(c(-1, 1.20)) +
+  theme(axis.text.x = element_blank(), axis.ticks.x=element_blank(), 
+        legend.position="bottom", plot.margin = unit(c(0.5, 1, 0.5, 0.5), "cm")) +
+  facet_wrap(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize), nrow = 3)
 
-png(paste0("pan-loss/network_aracne_plots/assortativity/expr_assort_enrichement.png"), 
-    width = 1800, height = 250)
+png(paste0("pan-loss/network_aracne_plots/assortativity/cancer_expr_assort_enrichement.png"), 
+    width = 820, height = 720)
 print(p)
 dev.off()
 
-p <- ggplot(cancer_enriched,  aes(x=isEnriched, y=chr_assortativity, color=cond)) +
+p <- ggplot(cancer_enriched,  aes(x=isEnriched, y=chr_assortativity, color=isEnriched)) +
   geom_boxplot(size=1) + 
-  ylab("Chromosomal\nAssortativity") +
-  scale_color_manual(values = color_pal) +
-  theme_base(base_size = 20) +
+  ylab("Chromosomal Assortativity") +
+  scale_color_manual(name = "", values = color_pal_enriched, 
+                     labels = c("No biologically associated", "Gene Ontology enriched")) +
+  theme_base(base_size = 30) +
   xlab("")  +
-  theme(legend.position = "none") +
-  stat_compare_means(aes(label = ..p.signif..),  label.x = 1.5, label.y = 1.1, symnum.args = symnum.args)+
-  ylim(c(-1, 1.15)) +
-  facet_grid(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize))
+  theme(axis.text.x = element_blank(), axis.ticks.x=element_blank(), 
+        legend.position="bottom", plot.margin = unit(c(0.5, 1, 0.5, 0.5), "cm")) +
+  stat_compare_means(aes(label = ..p.signif..),  label.x = 1.5, label.y = 1.1, symnum.args = symnum.args, 
+                     show.legend = F, size = 5) +
+  stat_summary(fun.data = ~c(y = -1.18, label = length(.)), geom = "text", color = "black",  size = 5) +
+  ylim(c(-1.25, 1.20)) +
+  facet_wrap(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize), nrow = 3)
 
-png(paste0("pan-loss/network_aracne_plots/assortativity/chr_assort_enrichement.png"), 
-    width = 1800, height = 250)
+png(paste0("pan-loss/network_aracne_plots/assortativity/cancer_chr_assort_enrichement.png"), 
+    width = 820, height = 720)
+print(p)
+dev.off()
+
+normal_enriched <- normal %>%
+  filter(size >= 5) %>%
+  mutate(isEnriched = if_else(enriched_terms > 0, "go", "no_go" ),
+         isEnriched = factor(isEnriched, levels = c("no_go", "go"), labels = c("No GO", "GO"), 
+                             ordered = TRUE))
+
+p <- ggplot(normal_enriched,  aes(x=isEnriched, y=chr_assortativity, color=isEnriched)) +
+  geom_boxplot(size=1) + 
+  ylab("Chromosomal Assortativity") +
+  scale_color_manual(name = "", values = color_pal_enriched, 
+                     labels = c("No biologically associated", "Gene Ontology enriched")) +
+  theme_base(base_size = 30) +
+  xlab("")  +
+  theme(axis.text.x = element_blank(), axis.ticks.x=element_blank(), 
+        legend.position="bottom", plot.margin = unit(c(0.5, 1, 0.5, 0.5), "cm")) +
+  stat_compare_means(aes(label = ..p.signif..),  label.x = 1.5, label.y = 1.1, symnum.args = symnum.args, 
+                     show.legend = F, size = 5) +
+  stat_summary(fun.data = ~c(y = -1.15, label = length(.)), geom = "text", color = "black",  size = 5) +
+  ylim(c(-1.25, 1)) +
+  facet_wrap(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize), nrow = 3) 
+
+png(paste0("pan-loss/network_aracne_plots/assortativity/normal_chr_assort_enrichement.png"), 
+    width = 820, height = 720)
 print(p)
 dev.off()
