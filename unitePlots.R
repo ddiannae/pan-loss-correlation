@@ -1,3 +1,7 @@
+########################################################################
+## Script to get one single plot from plots of all tissues 
+#######################################################################
+
 library(grid)
 library(png)
 library(gridExtra)
@@ -22,10 +26,14 @@ unitePlots <- function(plotname) {
 
 unitePlots("/distance_plots/intra-inter-count-onek-bins.png")
 unitePlots("/distance_plots/intra-inter-count-log-bins.png")
-unitePlots("/distance_plots/bin-size-100.png")
-unitePlots("/distance_plots/bin-size-1000.png")
-unitePlots("/distance_plots/bin-distance-100000.png")
+unitePlots("/distance_plots/intra-inter-count-onek-chunks.png")
+unitePlots("/distance_plots/intra-inter-count-log-chunks.png")
 
+unitePlots("/distance_plots/bin-size-1000-mean.png")
+unitePlots("/distance_plots/bin-distance-100000-mean.png")
+unitePlots("/distance_plots/bin-size-1000-mean_fitted.png")
+unitePlots("/distance_plots/bin-distance-100000-mean_fitted.png")
+unitePlots("/distance_plots/heatmap-bins-size-all-ttests-1000.png")
 
 ##### Changed to /network_aracne_plots/communities
 unitePlots("/network_aracne_plots/communities/comm-diameter-boxplot-network-intra-100000.png")
@@ -57,7 +65,7 @@ unitePlots("/distance_plots_no_arsyn/intra-inter-count-log-bins.png")
 unitePlots("/distance_plots_no_arsyn/bin-size-50.png")
 unitePlots("/distance_plots_no_arsyn/bin-distance-100000.png")
 
-unitePlots("/network_aracne_plots/assortativity/cancer-comm-assort-enrich-0_terms-100000.png")
-unitePlots("/network_aracne_plots/assortativity/normal-comm-assort-enrich-0_terms-100000.png")
+unitePlots("/network_aracne_plots/assortativity/cancer-comm-assort-enrich-100000.png")
+unitePlots("/network_aracne_plots/assortativity/normal-comm-assort-enrich-100000.png")
 
 
