@@ -1,3 +1,9 @@
+########################################################################
+## Script to get hot-spot cytobands (cytobands with more than half of
+## their total interactions present in the top 100 MI interactions),
+## the p-values from the null model, and their associated figure. 
+######################################################################
+
 library(readr)
 library(dplyr)
 library(tibble)
@@ -21,12 +27,30 @@ getSharedCytobands <- function(ts, cond) {
   return(cytobands_count)
 }
 
+getPValues <- function(ts, cond) {
+  all_pvals <- lapply(ts, function(tissue) {
+  
+        t_pvals <- read_tsv(paste0(tissue, "/distance_analysis/", cond, "-intra-interactions-by_cytoband-null_model-100000.tsv"),
+                          col_types = cols(chr = col_character()))
+        if(nrow(t_pvals > 0)) {
+          t_pvals %>%
+            mutate(tissue = tissue)
+        } else {
+          NULL
+        }
+  })
+  all_pvals <- bind_rows(all_pvals)
+  return(all_pvals)
+}
+
 tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus", 
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
              "testis", "thyroid","skin", "uterus")
 
 cyto_normal <- getSharedCytobands(tissues, "normal")
-cyto_cancer <- getSharedCytobands(tissues, "cancer")  
+cyto_cancer <- getSharedCytobands(tissues, "cancer") 
+pvals_normal <- getPValues(tissues, "normal")
+pvals_cancer <- getPValues(tissues, "cancer")
 
 counts_normal <- cyto_normal %>% group_by(chr, cytoband) %>% 
   tally(name = "ts", sort = T)
@@ -43,7 +67,8 @@ cyto_cancer_unique <- counts_cancer %>% filter(ts == 1) %>%
 
 cyto_normal_mas5 <- cyto_normal %>% 
   semi_join(counts_normal %>% filter(ts >= 5),by = c("chr", "cytoband")) %>%
-  filter(total_inter > 1)
+  filter(total_inter > 1) %>% 
+  inner_join(pvals_normal, by = c("chr", "cytoband", "tissue"))
 
 # A tibble: 20 × 6
 # Groups:   chr, cytoband [3]
@@ -72,7 +97,9 @@ cyto_normal_mas5 <- cyto_normal %>%
 
 cyto_cancer_mas5 <- cyto_cancer %>%
   semi_join(counts_cancer %>% filter(ts >= 5), by = c("chr", "cytoband")) %>%
-  filter(total_inter > 1)
+  filter(total_inter > 1) %>% 
+  arrange(chr, cytoband) %>% 
+  inner_join(pvals_cancer, by = c("chr", "cytoband", "tissue"))
 
 chrs <- c(as.character(1:22), "X", "Y")
 labels_chr <- paste0("Chr ", chrs)
@@ -110,7 +137,7 @@ cyto_normal_mas5 <- cyto_normal_mas5 %>%
   mutate(chr = factor(chr, levels=chrs, labels=labels_chr), 
          cytoband = factor(cytoband, levels = c(sort(cytobands[grep("p", cytobands)], decreasing = TRUE),
                                                 sort(cytobands[grep("q", cytobands)]))),
-         tissue = factor(str_to_title(tissue), levels = rev(tissues_labels)))
+         tissue = factor(str_to_title(tissue), levels = rev(tissues_labels))) 
 
 g <- ggplot(cyto_normal_mas5, aes(x=cytoband, y= tissue)) +
   geom_point(aes(size = total_inter, fill = fraction),stroke = 0.5, 
@@ -129,3 +156,4 @@ g <- ggplot(cyto_normal_mas5, aes(x=cytoband, y= tissue)) +
 png("pan-loss/cytobands/shared_cytobands_normal.png", width = 450, height = 250)
 print(g)
 dev.off()
+
