@@ -7,7 +7,7 @@ library(ComplexHeatmap)
 
 saveHeatmap <- function(cond, n, top) {
   barcodes <- read_tsv(paste0("pan-loss/network_intersections/", cond, "-interaction-barcodes-", n, ".tsv"))
-  tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus", 
+  tissues <- c("bladder", "brain", "breast", "colon", "esophagus", 
                "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
                "testis", "thyroid","skin", "uterus")
   

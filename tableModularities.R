@@ -2,7 +2,7 @@ library(readr)
 library(dplyr)
 library(tidyr)
 
-tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus",
+tissues <- c("bladder", "brain", "breast", "colon", "esophagus",
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate",
              "testis", "thyroid","skin", "uterus")
 

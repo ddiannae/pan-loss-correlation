@@ -85,7 +85,7 @@ get_scores <- function(cond, type) {
   
 }
 
-#get_scores("normal", "overlap")
-#get_scores("cancer", "overlap")
+get_scores("normal", "overlap")
+get_scores("cancer", "overlap")
 get_scores("normal", "jaccard")
 get_scores("cancer", "jaccard")

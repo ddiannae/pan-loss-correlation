@@ -12,9 +12,9 @@ library(ggthemes)
 library(ggpubr)
 library(tidyr)
 
-tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus", 
+tissues <- c("bladder", "brain", "breast", "colon", "esophagus", 
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
-             "skin", "testis", "thyroid","uterus")
+             "testis", "thyroid","uterus")
 names(tissues) <- tissues
 substr(names(tissues),1, 1) <- toupper(substr(names(tissues),1, 1))
   
@@ -24,7 +24,7 @@ names(color_pal) <- labels
 
 getSummaries <- function(cond, tss) {
   all_summaries <- lapply(tss, function(ts) {
-    read_tsv(paste0(ts, "/network_aracne/assortativity/", cond, "-comm-summary-100000.tsv")) %>%
+    read_tsv(paste0(ts, "/networks_deseq2/assortativity/", cond, "-comm-summary-10000.tsv")) %>%
       mutate(tissue = ts, id = paste(tissue, community_id, sep="_")) %>%
       select(id, tissue, community_id, everything())
   })  
@@ -57,7 +57,7 @@ p <- ggplot(all , aes(x = tissue, y = chr_assortativity, fill = cond,
         strip.text.y = element_text(size = 20)) + 
   facet_grid(cond~tissue, scale= "free_x", labeller = labeller(tissue = capitalize))
 
-png(paste0("pan-loss/network_aracne_plots/assortativity/chr_assortativity.png"), 
+png(paste0("pan-loss/network_plots_deseq2/assortativity/chr_assortativity_10000.png"), 
     width = 2000, height = 350)
 print(p)
 dev.off()
@@ -80,7 +80,7 @@ p <- ggplot(cancer , aes(x = tissue, y = expr_assortativity, fill = cond,
         strip.text.y = element_text(size = 20), ) + 
   facet_grid(cond~tissue, scale= "free_x", labeller = labeller(tissue = capitalize))
 
-png(paste0("pan-loss/network_aracne_plots/assortativity/expr_assortativity.png"), 
+png(paste0("pan-loss/network_plots_deseq2/assortativity/expr_assortativity_10000.png"), 
     width = 2000, height = 200)
 print(p)
 dev.off()
@@ -109,7 +109,7 @@ p <- ggplot(cancer_enriched,  aes(x=isEnriched, y=expr_assortativity, color=isEn
         legend.position="bottom", plot.margin = unit(c(0.5, 1, 0.5, 0.5), "cm")) +
   facet_wrap(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize), nrow = 3)
 
-png(paste0("pan-loss/network_aracne_plots/assortativity/cancer_expr_assort_enrichement.png"), 
+png(paste0("pan-loss/network_plots_deseq2/assortativity/cancer_expr_assort_enrichement_10000.png"), 
     width = 820, height = 720)
 print(p)
 dev.off()
@@ -129,7 +129,7 @@ p <- ggplot(cancer_enriched,  aes(x=isEnriched, y=chr_assortativity, color=isEnr
   ylim(c(-1.25, 1.20)) +
   facet_wrap(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize), nrow = 3)
 
-png(paste0("pan-loss/network_aracne_plots/assortativity/cancer_chr_assort_enrichement.png"), 
+png(paste0("pan-loss/network_plots_deseq2/assortativity/cancer_chr_assort_enrichement_10000.png"), 
     width = 820, height = 720)
 print(p)
 dev.off()
@@ -155,7 +155,8 @@ p <- ggplot(normal_enriched,  aes(x=isEnriched, y=chr_assortativity, color=isEnr
   ylim(c(-1.25, 1)) +
   facet_wrap(~tissue, scale= "free_x", labeller = labeller(tissue = capitalize), nrow = 3) 
 
-png(paste0("pan-loss/network_aracne_plots/assortativity/normal_chr_assort_enrichement.png"), 
+png(paste0("pan-loss/network_plots_deseq2/assortativity/normal_chr_assort_enrichement_10000.png"), 
     width = 820, height = 720)
 print(p)
 dev.off()
+

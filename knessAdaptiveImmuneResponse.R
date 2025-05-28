@@ -1,8 +1,10 @@
 library(igraph)
 library(vroom)
+library(ggplot2)
+library(ggthemes)
 
 getCommKnessDistribution <-  function(cond) {
-  tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus",
+  tissues <- c("bladder", "brain", "breast", "colon", "esophagus",
                "kidney", "liver", "lung", "ovary", "pancreas", "prostate",
                "testis", "thyroid","skin", "uterus")
   

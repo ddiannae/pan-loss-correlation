@@ -29,7 +29,6 @@ getSharedCytobands <- function(ts, cond) {
 
 getPValues <- function(ts, cond) {
   all_pvals <- lapply(ts, function(tissue) {
-  
         t_pvals <- read_tsv(paste0(tissue, "/distance_analysis/", cond, "-intra-interactions-by_cytoband-null_model-100000.tsv"),
                           col_types = cols(chr = col_character()))
         if(nrow(t_pvals > 0)) {
@@ -43,7 +42,7 @@ getPValues <- function(ts, cond) {
   return(all_pvals)
 }
 
-tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus", 
+tissues <- c("bladder", "brain", "breast", "colon", "esophagus", 
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
              "testis", "thyroid","skin", "uterus")
 
@@ -69,31 +68,6 @@ cyto_normal_mas5 <- cyto_normal %>%
   semi_join(counts_normal %>% filter(ts >= 5),by = c("chr", "cytoband")) %>%
   filter(total_inter > 1) %>% 
   inner_join(pvals_normal, by = c("chr", "cytoband", "tissue"))
-
-# A tibble: 20 × 6
-# Groups:   chr, cytoband [3]
-# chr   cytoband total_inter inter fraction tissue    
-# <chr> <chr>          <dbl> <dbl>    <dbl> <chr>     
-# 1 Y     q11.221            3     3    1     brain     
-# 2 2     p25.2              1     1    1     breast    
-# 3 2     p25.2              1     1    1     colorectal
-# 4 2     p25.2              1     1    1     esophagus 
-# 5 Y     q11.221            3     2    0.667 esophagus 
-# 6 Y     q11.223            1     1    1     esophagus 
-# 7 2     p25.2              1     1    1     kidney    
-# 8 Y     q11.221           10     5    0.5   kidney    
-# 9 Y     q11.223            1     1    1     kidney    
-# 10 Y     q11.221            6     6    1     liver     
-# 11 Y     q11.223            1     1    1     liver     
-# 12 Y     q11.221            3     2    0.667 lung      
-# 13 Y     q11.221            3     2    0.667 pancreas  
-# 14 Y     q11.223            1     1    1     pancreas  
-# 15 2     p25.2              1     1    1     prostate  
-# 16 2     p25.2              1     1    1     thyroid   
-# 17 2     p25.2              1     1    1     skin      
-# 18 Y     q11.221            3     2    0.667 skin      
-# 19 Y     q11.223            1     1    1     skin      
-# 20 2     p25.2              1     1    1     uterus
 
 cyto_cancer_mas5 <- cyto_cancer %>%
   semi_join(counts_cancer %>% filter(ts >= 5), by = c("chr", "cytoband")) %>%
@@ -157,3 +131,11 @@ png("pan-loss/cytobands/shared_cytobands_normal.png", width = 450, height = 250)
 print(g)
 dev.off()
 
+bind_rows(
+  cyto_normal_mas5 %>%
+    select(chr, cytoband, total_inter, fraction, tissue, p_val = p) %>%
+    mutate(condition = "Normal"),
+  cyto_cancer_mas5 %>%
+    select(chr, cytoband, total_inter, fraction, tissue, p_val = p) %>%
+    mutate(condition = "Cancer")
+) %>% write_tsv("pan-loss/cytobands/shared_cytobands.tsv")

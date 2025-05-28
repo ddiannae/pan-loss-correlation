@@ -12,7 +12,7 @@ library(circlize)
 library(ComplexHeatmap)
 library(stringr)
 
-tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus", 
+tissues <- c("bladder", "brain", "breast", "colon", "esophagus", 
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate", 
              "testis", "thyroid","skin", "uterus")
 

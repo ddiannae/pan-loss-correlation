@@ -9,7 +9,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 
-tissues <- c("bladder", "brain", "breast", "colorectal", "esophagus",
+tissues <- c("bladder", "brain", "breast", "colon", "esophagus",
              "kidney", "liver", "lung", "ovary", "pancreas", "prostate",
              "testis", "thyroid","skin", "uterus")
 inter <- "100000"
@@ -24,7 +24,7 @@ getSummaries <- function(cond, tss) {
 }
 
 getSummaries("normal", tissues) %>% 
-  write_tsv("pan-loss/network_aracne/cancer-communities-summary-100000.tsv")
+  write_tsv("pan-loss/network_aracne/normal-communities-summary-100000.tsv")
 
 getSummaries("cancer", tissues) %>% 
   write_tsv("pan-loss/network_aracne/cancer-communities-summary-100000.tsv")
